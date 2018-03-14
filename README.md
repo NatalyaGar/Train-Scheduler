@@ -6,6 +6,6 @@
 * When adding trains, administrators able to submit the following:
 * Train Name
 * Destination 
-* First Train Time -- in military time
+* First Train Time
 * Frequency -- in minutes
 
