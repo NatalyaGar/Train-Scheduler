@@ -1,6 +1,6 @@
 /* global moment firebase */
 // Initialize Firebase
-
+$(document).ready(function(){
 var config = {
     apiKey: "AIzaSyAiKCgIO3xkNwng2X2_kAJ7-uZoKai1oBc",
     authDomain: "api-progect-7fb01.firebaseapp.com",
@@ -14,15 +14,11 @@ var config = {
 // Create a variable to reference the database
 var database = firebase.database();
 
-//Initial Values
-//  var trainName = "";
-//  var destination = "";
-//  var firstTrainTime = "";
-//  var tFrequency = "";  
 
 // Button for adding Trains
 
 $('#add-train-btn').on("click", function(event) {
+    console.log("button");
  event.preventDefault();
 
         // Grabs user unput
@@ -31,10 +27,7 @@ $('#add-train-btn').on("click", function(event) {
         var firstTrainTime =$('#first-train-time-input').val().trim();
         var tFrequency = $("#frequecy-input").val().trim();
         
-        //   trainName = $("#train-name-input").val().trim();
-        //   destination = $("#destination-input").val().trim();
-        //   firstTrainTime =$('#first-train-time-input').val().trim();
-        //   tFrequency = $("#frequecy-input").val().trim();
+        
         
         // Creating local "temporary" object for holding train data
 
@@ -46,28 +39,15 @@ $('#add-train-btn').on("click", function(event) {
         };
 
         //Upload train data to the database
-        //  database.ref().push(newTrain);
-        database.ref().set(newTrain);
-
-        // database.ref().set({
-        //     name: trainName,
-        //      destina: destination,
-        //      firstTrain: firstTrainTime,
-        //      freque: frequency
-            
-        // });
-        // });
+         database.ref().push(newTrain);
+       
             console.log(newTrain.name);
             console.log(newTrain.destina);
             console.log(newTrain.firstTime);
             console.log(newTrain.freque);
-            // });
-            //  console.log(name);
-            //  console.log(destina);
-            //  console.log(firstTrain);
-            //  console.log(freque);
+           
 
-            //  //Clears all of the text-boxes
+            //Clears all of the text-boxes
             $("#train-name-input").val("");
             $("#destination-input").val("");
             $('#first-train-time-input').val("");
@@ -91,18 +71,19 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey){
             console.log(destination);
             console.log(firstTrainTime);
             // console.log(tFequency);
+            
+            // Change the HTML to reflect
+            $("#train-name-input").text(childSnapshot.val().name);
+            $("#destination-input").text(childSnapshot.val().destina);
+            $('#first-train-time-input').text(childSnapshot.val().firstTime);
+            $("#frequecy-input").text(childSnapshot.val().freque);
+
+
 
         //     //Prettify first train time
             var firstTrainTimePretty = moment.unix(firstTrainTime).format("HH:mm");
 
-        // First Time (pushed back 1 year to make sure it comes before current time)
-
-        //  var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-        //  console.log(firstTimeConverted);
-
-        var firstTrainTime = "10:00";
-        var tFrequency = 8;
-
+       
 
         var firstTimeConverted = moment(firstTrainTime , "HH:mm A").subtract(1, "years");
         console.log(firstTimeConverted);
@@ -124,11 +105,9 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey){
         console.log("Minutes Away: " + tMinutesTillTrain);
 
         // Next Train
-        //  var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+        
         var nextTrain = moment().add(tMinutesTillTrain, "minutes").format("hh:mm A");
-        //  console.log("Next Arrival: " + moment(nextTrain).format("hh:mm A"));
-        // console.log("Next Arrival: " + moment(nextTrain));
-
+       
         //Add data into the table
         $('#schedule-table > tbody')
         .append(`<tr>
@@ -138,5 +117,8 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey){
                         <td>${nextTrain}</td>
                         <td>${tMinutesTillTrain}</td>
                 </tr>`)
-})
-
+},
+function(errorObject) {
+    console.log("Errors handled: " + errorObject.code);
+});
+});
