@@ -55,17 +55,17 @@ $('#add-train-btn').on("click", function(event) {
 
 });
 
-// // Create Firebase event for adding train to the database and a row
-database.ref().on("child_added", function(childSnapshot, prevChildKey){
-    console.log(childSnapshot.val());
+      // Create Firebase event for adding train to the database and a row
+      database.ref().on("child_added", function(childSnapshot, prevChildKey){
+      console.log(childSnapshot.val());
 
-        //     //Store everything into a variable.
+            //Store everything into a variable.
             var trainName = childSnapshot.val().name;
             var destination = childSnapshot.val().destina;
             var firstTrainTime = childSnapshot.val().firstTime;
             var tFrequency = childSnapshot.val().freque;
 
-        //     //Train info
+           //Train info
             
             console.log(trainName);
             console.log(destination);
@@ -80,7 +80,7 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey){
 
 
 
-        //     //Prettify first train time
+           //Prettify first train time
             var firstTrainTimePretty = moment.unix(firstTrainTime).format("HH:mm");
 
        
